@@ -5,7 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "update:schema": "node scripts/update-schema.js",
+    "publish:schema": "APOLLO_KEY=service:My-Graph-7k3oxm:A8rXO-GetoTRHgnUZnamOw rover graph publish My-Graph-7k3oxm@current --schema ./schema.graphql"
   },
   "dependencies": {
     "@apollo/server": "^5.4.0",

@@ -10,9 +10,14 @@ const typeDefs = `
     author: String!
   }
 
+  type Test {
+    test: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
+    test: Test
   }
 `
 
@@ -25,6 +30,7 @@ const resolvers = {
   Query: {
     hello: () => "Hello, GraphQL",
     books: () => books,
+    test: () => ({ test: "Test" }),
   }
 }
 
