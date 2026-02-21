@@ -2,6 +2,9 @@ type Book {
     id: ID!
     title: String!
     author: String!
+    publishedYear: Int
+    price: Float
+    inStock: Boolean
   }
 
   type Test {
@@ -19,4 +22,5 @@ type Book {
     books: [Book!]!
     test: Test
     user: User
+    book: Book
   }

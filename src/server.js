@@ -13,6 +13,9 @@ const typeDefs = `
     id: ID!
     title: String!
     author: String!
+    publishedYear: Int
+    price: Float
+    inStock: Boolean
   }
 
   type Test {
@@ -30,12 +33,27 @@ const typeDefs = `
     books: [Book!]!
     test: Test
     user: User
+    book: Book
   }
 `
 
 const books = [
-  { id: '1', title: 'Title 1', author: 'Author 1' },
-  { id: '2', title: 'Title 2', author: 'Author 2' }
+  {
+    id: '1',
+    title: 'Title 1',
+    author: 'Author 1',
+    price: 400,
+    publishedYear: 1925,
+    inStock: true,
+  },
+  {
+    id: '2',
+    title: 'Title 2',
+    author: 'Author 2',
+    publishedYear: 1954,
+    price: 800,
+    inStock: false,
+  }
 ]
 
 const user = { id: 1, name: "User", email: "user@email.con" }
@@ -46,6 +64,7 @@ const resolvers = {
     books: () => books,
     test: () => ({ test: "Test" }),
     user: () => user,
+    book: () => books.at(0)
   }
 }
 
