@@ -32,7 +32,8 @@ type Book {
     hello: String!
     books: [Book!]!
     test: Test
-    user: User
+    # user: User
     # book: Book
     book(id: ID!): Book
+    user(id: ID!): User
   }

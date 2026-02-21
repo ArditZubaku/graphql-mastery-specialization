@@ -43,9 +43,10 @@ const typeDefs = `
     hello: String!
     books: [Book!]!
     test: Test
-    user: User
+    # user: User
     # book: Book
     book(id: ID!): Book
+    user(id: ID!): User
   }
 `
 
@@ -117,7 +118,10 @@ const books = [
   }
 ]
 
-const user = { id: 1, name: "User", email: "user@email.con" }
+const users = [
+  { id: 1, name: "User 1", email: "user1@email.con" },
+  { id: 2, name: "User 2", email: "user2@email.con" }
+]
 
 const authors = [
   { id: 'a1', name: "Author 1", countryCode: 'UK' },
@@ -134,9 +138,10 @@ const resolvers = {
     hello: () => "Hello, GraphQL",
     books: () => books,
     test: () => ({ test: "Test" }),
-    user: () => user,
+    // user: () => user,
     // book: () => books.at(0)
-    book: (_, args) => books.find((b) => b.id === args.id)
+    book: (_, args) => books.find((b) => b.id === args.id),
+    user: (_, args) => users.find((u) => u.id === args.id)
   },
   Book: {
     // parent is of typeof book resolver
