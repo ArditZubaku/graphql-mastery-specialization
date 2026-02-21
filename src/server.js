@@ -3,6 +3,11 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 
 const PORT = 4000;
 
+/*
+The workflow is: edit typeDefs in server.js,
+then run yarn update:schema && yarn publish:schema.
+*/
+
 const typeDefs = `
   type Book {
     id: ID!
