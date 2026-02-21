@@ -47,6 +47,7 @@ const typeDefs = `
     # book: Book
     book(id: ID!): Book
     user(id: ID!): User
+    users: [User!]!
   }
 `
 
@@ -96,6 +97,20 @@ fragment BookFields on Book {
   }
 }
 */
+/*
+ * Variables
+query ExampleQuery($id: ID!) {
+  book(id: $id) {
+    author {
+      name
+    }
+  }
+}
+* In the Variables panel we pass:
+{
+  "id": "2"
+}
+*/
 
 const books = [
   {
@@ -141,7 +156,8 @@ const resolvers = {
     // user: () => user,
     // book: () => books.at(0)
     book: (_, args) => books.find((b) => b.id === args.id),
-    user: (_, args) => users.find((u) => u.id === args.id)
+    user: (_, args) => users.find((u) => u.id === args.id),
+    users: () => users,
   },
   Book: {
     // parent is of typeof book resolver

@@ -36,4 +36,5 @@ type Book {
     # book: Book
     book(id: ID!): Book
     user(id: ID!): User
+    users: [User!]!
   }
