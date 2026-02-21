@@ -49,6 +49,53 @@ const typeDefs = `
   }
 `
 
+/*
+ * Params
+  query ExampleQuery {
+    book(id: 1) {
+      author {
+        name
+      }
+    }
+  }
+ */
+/*
+ * Aliases:
+ query ExampleQuery {
+  book1: book(id: 1) {
+    author {
+      country {
+        name
+      }
+    }
+  }
+  book2: book(id: 2) {
+    title
+    author {
+      id
+    }
+  }
+}
+ */
+/*
+ * Fragments:
+query ExampleQuery {
+  book1: book(id: 1) {
+    ...BookFields
+  }
+  book2: book(id: 2) {
+    ...BookFields
+  }
+}
+
+fragment BookFields on Book {
+  title
+  author {
+    name
+  }
+}
+*/
+
 const books = [
   {
     id: '1',
@@ -89,15 +136,6 @@ const resolvers = {
     test: () => ({ test: "Test" }),
     user: () => user,
     // book: () => books.at(0)
-    /*
-      query ExampleQuery {
-        book(id: 1) {
-          author {
-            name
-          }
-        }
-      }
-     */
     book: (_, args) => books.find((b) => b.id === args.id)
   },
   Book: {
