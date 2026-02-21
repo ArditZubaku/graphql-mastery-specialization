@@ -8,8 +8,15 @@ type Book {
     test: String
   }
 
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
     test: Test
+    user: User
   }

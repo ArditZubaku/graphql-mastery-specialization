@@ -19,10 +19,17 @@ const typeDefs = `
     test: String
   }
 
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
     test: Test
+    user: User
   }
 `
 
@@ -31,11 +38,14 @@ const books = [
   { id: '2', title: 'Title 2', author: 'Author 2' }
 ]
 
+const user = { id: 1, name: "User", email: "user@email.con" }
+
 const resolvers = {
   Query: {
     hello: () => "Hello, GraphQL",
     books: () => books,
     test: () => ({ test: "Test" }),
+    user: () => user,
   }
 }
 
