@@ -4,7 +4,12 @@ type Book {
     author: String!
   }
 
+  type Test {
+    test: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
+    test: Test
   }
