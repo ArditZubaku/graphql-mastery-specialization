@@ -12,10 +12,14 @@ const typeDefs = `
   type Book {
     id: ID!
     title: String!
-    author: String!
+    author: Author!
     publishedYear: Int
     price: Float
     inStock: Boolean
+  }
+
+  type Author {
+    name: String!
   }
 
   type Test {
@@ -41,7 +45,8 @@ const books = [
   {
     id: '1',
     title: 'Title 1',
-    author: 'Author 1',
+    // author: 'Author 1',
+    authorID: 'a1',
     price: 400,
     publishedYear: 1925,
     inStock: true,
@@ -49,7 +54,8 @@ const books = [
   {
     id: '2',
     title: 'Title 2',
-    author: 'Author 2',
+    // author: 'Author 2',
+    authorID: 'a2',
     publishedYear: 1954,
     price: 800,
     inStock: false,
@@ -65,6 +71,17 @@ const resolvers = {
     test: () => ({ test: "Test" }),
     user: () => user,
     book: () => books.at(0)
+  },
+  Book: {
+    // parent is of typeof book resolver
+    author: (parent) => {
+      const authors = {
+        a1: { name: "Author 1" },
+        a2: { name: "Author 2" }
+      }
+
+      return authors[parent.authorID]
+    }
   }
 }
 
