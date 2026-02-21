@@ -19,7 +19,14 @@ const typeDefs = `
   }
 
   type Author {
+    id: ID!
     name: String!
+    country: Country
+  }
+
+  type Country {
+    code: ID!
+    name: String
   }
 
   type Test {
@@ -65,6 +72,16 @@ const books = [
 
 const user = { id: 1, name: "User", email: "user@email.con" }
 
+const authors = [
+  { id: 'a1', name: "Author 1", countryCode: 'UK' },
+  { id: 'a2', name: "Author 2", countryCode: 'US' }
+]
+
+const countries = [
+  { code: 'UK', name: 'United Kingdom' },
+  { code: 'US', name: 'United States' }
+]
+
 const resolvers = {
   Query: {
     hello: () => "Hello, GraphQL",
@@ -86,12 +103,12 @@ const resolvers = {
   Book: {
     // parent is of typeof book resolver
     author: (parent) => {
-      const authors = {
-        a1: { name: "Author 1" },
-        a2: { name: "Author 2" }
-      }
-
-      return authors[parent.authorID]
+      return authors.find((a) => a.id === parent.authorID)
+    }
+  },
+  Author: {
+    country: (parent) => {
+      return countries.find((c) => c.code === parent.countryCode)
     }
   }
 }

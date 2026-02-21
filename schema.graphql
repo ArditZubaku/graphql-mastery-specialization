@@ -8,7 +8,14 @@ type Book {
   }
 
   type Author {
+    id: ID!
     name: String!
+    country: Country
+  }
+
+  type Country {
+    code: ID!
+    name: String
   }
 
   type Test {
