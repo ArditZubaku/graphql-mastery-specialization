@@ -37,7 +37,8 @@ const typeDefs = `
     books: [Book!]!
     test: Test
     user: User
-    book: Book
+    # book: Book
+    book(id: ID!): Book
   }
 `
 
@@ -70,7 +71,17 @@ const resolvers = {
     books: () => books,
     test: () => ({ test: "Test" }),
     user: () => user,
-    book: () => books.at(0)
+    // book: () => books.at(0)
+    /*
+      query ExampleQuery {
+        book(id: 1) {
+          author {
+            name
+          }
+        }
+      }
+     */
+    book: (_, args) => books.find((b) => b.id === args.id)
   },
   Book: {
     // parent is of typeof book resolver

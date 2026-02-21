@@ -26,5 +26,6 @@ type Book {
     books: [Book!]!
     test: Test
     user: User
-    book: Book
+    # book: Book
+    book(id: ID!): Book
   }
