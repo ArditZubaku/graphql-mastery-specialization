@@ -1,0 +1,3 @@
+- [ ] Convert this to a TS project
+  - [ ] Try it with Node + TS
+  - [ ] Try it with Bun
