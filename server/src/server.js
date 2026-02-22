@@ -45,6 +45,12 @@ const typeDefs = `
     password: String!
   }
 
+  input UpdateUserInput {
+    id: ID!
+    name: String
+    email: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -58,6 +64,8 @@ const typeDefs = `
 
   type Mutation {
     createUser(input: CreateUserInput!): User!
+    updateUser(input: UpdateUserInput!): User!
+    deleteUser(id: ID!): Boolean!
   }
 `
 
@@ -215,6 +223,28 @@ const resolvers = {
       users.push(newUser);
 
       return newUser;
+    },
+    updateUser: (_, args) => {
+      const { input } = args;
+      const { id, name, email } = input;
+
+      const user = users.find((u) => u.id === id);
+      if (!user) throw new Error('User not found');
+
+      if (name) user.name = name;
+      if (email) user.email = email;
+
+      return user;
+    },
+    deleteUser: (_, args) => {
+      const { id } = args;
+      const idx = users.findIndex((u) => u.id === id)
+
+      if (idx === -1) throw new Error('User not found');
+
+      users.splice(idx, 1);
+
+      return true;
     }
   },
   Book: {

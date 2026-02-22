@@ -34,6 +34,12 @@ type Book {
     password: String!
   }
 
+  input UpdateUserInput {
+    id: ID!
+    name: String
+    email: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -47,4 +53,6 @@ type Book {
 
   type Mutation {
     createUser(input: CreateUserInput!): User!
+    updateUser(input: UpdateUserInput!): User!
+    deleteUser(id: ID!): Boolean!
   }
