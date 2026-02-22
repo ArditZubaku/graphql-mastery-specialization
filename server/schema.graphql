@@ -1,0 +1,40 @@
+type Book {
+    id: ID!
+    title: String!
+    author: Author!
+    publishedYear: Int
+    price: Float
+    inStock: Boolean
+  }
+
+  type Author {
+    id: ID!
+    name: String!
+    country: Country
+  }
+
+  type Country {
+    code: ID!
+    name: String
+  }
+
+  type Test {
+    test: String
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
+  type Query {
+    hello: String!
+    books: [Book!]!
+    test: Test
+    # user: User
+    # book: Book
+    book(id: ID!): Book
+    user(id: ID!): User
+    users: [User!]!
+  }
