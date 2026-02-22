@@ -6,13 +6,19 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
+    "start:gateway": "node src/gateway.js",
     "update:schema": "node scripts/update-schema.js",
     "publish:schema": "APOLLO_KEY=service:My-Graph-7k3oxm:A8rXO-GetoTRHgnUZnamOw rover graph publish My-Graph-7k3oxm@current --schema ./schema.graphql"
   },
   "dependencies": {
     "@apollo/server": "^5.4.0",
+    "@graphql-tools/load": "^8.1.8",
     "@graphql-tools/load-files": "^7.0.1",
     "@graphql-tools/merge": "^9.1.7",
+    "@graphql-tools/schema": "^10.0.31",
+    "@graphql-tools/stitch": "^10.1.11",
+    "@graphql-tools/url-loader": "^9.0.6",
+    "cross-fetch": "^4.1.0",
     "graphql": "^16.12.0"
   }
 }
