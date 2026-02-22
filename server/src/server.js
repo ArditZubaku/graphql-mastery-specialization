@@ -39,6 +39,12 @@ const typeDefs = `
     email: String!
   }
 
+  input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -51,7 +57,7 @@ const typeDefs = `
   }
 
   type Mutation {
-    createUser(name: String!, email: String!, password: String!): User!
+    createUser(input: CreateUserInput!): User!
   }
 `
 
@@ -126,6 +132,26 @@ query ExampleQuery($id: ID!) {
 }
 */
 
+/*
+ * Mutation with Input Type
+ mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    name
+    email
+  }
+}
+
+* Variables:
+{
+  "input": {
+    "email": "user3@email.com",
+    "name": "User 3",
+    "password": "user3Password"
+  }
+}
+ */
+
 const books = [
   {
     id: '1',
@@ -177,7 +203,8 @@ const resolvers = {
   },
   Mutation: {
     createUser: (_, args) => {
-      const { name, email, password } = args;
+      const { input } = args;
+      const { name, email, password } = input;
 
       const newUser = {
         id: userIDCounter++,

@@ -28,6 +28,12 @@ type Book {
     email: String!
   }
 
+  input CreateUserInput {
+    name: String!
+    email: String!
+    password: String!
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -40,5 +46,5 @@ type Book {
   }
 
   type Mutation {
-    createUser(name: String!, email: String!, password: String!): User!
+    createUser(input: CreateUserInput!): User!
   }
