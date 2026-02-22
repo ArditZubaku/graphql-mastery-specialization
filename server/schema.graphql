@@ -71,6 +71,8 @@ type Book {
     company: String
   }
 
+  union AddressResult = HomeAddress | OfficeAddress
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -81,6 +83,7 @@ type Book {
     user(id: ID!): User
     users: [User!]!
     addresses: [Address!]!
+    searchAddresses: [AddressResult!]!
   }
 
   type Mutation {

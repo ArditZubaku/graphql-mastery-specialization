@@ -82,6 +82,8 @@ const typeDefs = `
     company: String
   }
 
+  union AddressResult = HomeAddress | OfficeAddress
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -92,6 +94,7 @@ const typeDefs = `
     user(id: ID!): User
     users: [User!]!
     addresses: [Address!]!
+    searchAddresses: [AddressResult!]!
   }
 
   type Mutation {
@@ -192,6 +195,40 @@ query ExampleQuery($id: ID!) {
 }
  */
 
+/*
+ * Using inline-Fragments with interfaces
+query InlineFragments {
+  addresses {
+    id
+    city
+    street
+    zip
+    ... on HomeAddress {
+      landmark
+    }
+    ... on OfficeAddress {
+      company
+    }
+  }
+}
+ */
+
+/*
+ * Using inline-Fragments with Union Types
+query InlineFragmentsUnionType {
+  searchAddresses {
+    ... on HomeAddress {
+      id
+      landmark
+    }
+    ... on OfficeAddress {
+      id
+      company
+    }
+  }
+}
+*/
+
 const books = [
   {
     id: '1',
@@ -261,6 +298,7 @@ const resolvers = {
     user: (_, args) => users.find((u) => u.id === args.id),
     users: () => users,
     addresses: () => addresses,
+    searchAddresses: () => addresses,
   },
   Mutation: {
     createUser: (_, args) => {
