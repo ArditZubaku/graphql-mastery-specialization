@@ -37,12 +37,20 @@ const typeDefs = `
     id: ID!
     name: String!
     email: String!
+    gender: Gender!
+  }
+
+  enum Gender {
+    MALE
+    FEMALE
+    OTHER
   }
 
   input CreateUserInput {
     name: String!
     email: String!
     password: String!
+    gender: Gender!
   }
 
   input UpdateUserInput {
@@ -182,8 +190,8 @@ const books = [
 ]
 
 const users = [
-  { id: 1, name: "User 1", email: "user1@email.con" },
-  { id: 2, name: "User 2", email: "user2@email.con" }
+  { id: 1, name: "User 1", email: "user1@email.con", gender: "MALE" },
+  { id: 2, name: "User 2", email: "user2@email.con", gender: "FEMALE" }
 ]
 
 const authors = [
@@ -226,13 +234,14 @@ const resolvers = {
     },
     updateUser: (_, args) => {
       const { input } = args;
-      const { id, name, email } = input;
+      const { id, name, email, gender } = input;
 
       const user = users.find((u) => u.id === id);
       if (!user) throw new Error('User not found');
 
       if (name) user.name = name;
       if (email) user.email = email;
+      if (gender) user.gender = gender;
 
       return user;
     },

@@ -26,12 +26,20 @@ type Book {
     id: ID!
     name: String!
     email: String!
+    gender: Gender!
+  }
+
+  enum Gender {
+    MALE
+    FEMALE
+    OTHER
   }
 
   input CreateUserInput {
     name: String!
     email: String!
     password: String!
+    gender: Gender!
   }
 
   input UpdateUserInput {
