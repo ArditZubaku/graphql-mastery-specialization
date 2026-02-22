@@ -48,6 +48,29 @@ type Book {
     email: String
   }
 
+  interface Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+  }
+
+  type HomeAddress implements Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+    landmark: String
+  }
+
+  type OfficeAddress implements Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+    company: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -57,6 +80,7 @@ type Book {
     book(id: ID!): Book
     user(id: ID!): User
     users: [User!]!
+    addresses: [Address!]!
   }
 
   type Mutation {

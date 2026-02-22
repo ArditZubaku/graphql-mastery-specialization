@@ -59,6 +59,29 @@ const typeDefs = `
     email: String
   }
 
+  interface Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+  }
+
+  type HomeAddress implements Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+    landmark: String
+  }
+
+  type OfficeAddress implements Address {
+    id: ID!
+    street: String!
+    city: String!
+    zip: String!
+    company: String
+  }
+
   type Query {
     hello: String!
     books: [Book!]!
@@ -68,6 +91,7 @@ const typeDefs = `
     book(id: ID!): Book
     user(id: ID!): User
     users: [User!]!
+    addresses: [Address!]!
   }
 
   type Mutation {
@@ -204,6 +228,26 @@ const countries = [
   { code: 'US', name: 'United States' }
 ]
 
+const addresses = [
+  {
+    id: "1",
+    street: "Street 1",
+    city: "City 1",
+    zip: "0001",
+    landmark: "Landmark",
+    // When working with interfaces we need to specify the __typename
+    __typename: "HomeAddress",
+  },
+  {
+    id: "2",
+    street: "Street 2",
+    city: "City 2",
+    zip: "0002",
+    company: "Company",
+    __typename: "OfficeAddress",
+  }
+]
+
 let userIDCounter = 3;
 
 const resolvers = {
@@ -216,6 +260,7 @@ const resolvers = {
     book: (_, args) => books.find((b) => b.id === args.id),
     user: (_, args) => users.find((u) => u.id === args.id),
     users: () => users,
+    addresses: () => addresses,
   },
   Mutation: {
     createUser: (_, args) => {
