@@ -49,6 +49,10 @@ const typeDefs = `
     user(id: ID!): User
     users: [User!]!
   }
+
+  type Mutation {
+    createUser(name: String!, email: String!, password: String!): User!
+  }
 `
 
 /*
@@ -112,6 +116,16 @@ query ExampleQuery($id: ID!) {
 }
 */
 
+/*
+ mutation {
+  createUser(name: "Test", email: "test@email.com", password: "password1234") {
+    id
+    name
+    email
+  }
+}
+*/
+
 const books = [
   {
     id: '1',
@@ -148,6 +162,8 @@ const countries = [
   { code: 'US', name: 'United States' }
 ]
 
+let userIDCounter = 3;
+
 const resolvers = {
   Query: {
     hello: () => "Hello, GraphQL",
@@ -158,6 +174,21 @@ const resolvers = {
     book: (_, args) => books.find((b) => b.id === args.id),
     user: (_, args) => users.find((u) => u.id === args.id),
     users: () => users,
+  },
+  Mutation: {
+    createUser: (_, args) => {
+      const { name, email, password } = args;
+
+      const newUser = {
+        id: userIDCounter++,
+        name,
+        email,
+      }
+
+      users.push(newUser);
+
+      return newUser;
+    }
   },
   Book: {
     // parent is of typeof book resolver
