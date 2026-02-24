@@ -3,6 +3,7 @@ The workflow is: edit typeDefs in server.js,
 then run yarn update:schema && yarn publish:schema.
 */
 
+import { GraphQLError } from "graphql"
 import { EmailScalar } from "./email.scalar.js"
 
 /*
@@ -204,7 +205,15 @@ export const resolvers = {
       let { name, email, password, gender } = input;
 
       if (!email || !password) {
-        throw new Error("Email and password are required")
+        throw new GraphQLError(
+          "Email and password are required",
+          {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              field: "email",
+            }
+          }
+        )
       }
 
       email = email.trim().toLowerCase()
@@ -212,7 +221,16 @@ export const resolvers = {
       gender = gender?.toUpperCase()
 
       if (password.length < 8) {
-        throw new Error("Password must be at least 8 characters long")
+        throw new GraphQLError(
+          "Password must be at least 8 characters long",
+          {
+            extensions: {
+              code: "BAD_USER_INPUT",
+              field: "email",
+              minLength: 8,
+            }
+          }
+        )
       }
 
       const newUser = {
