@@ -201,7 +201,19 @@ export const resolvers = {
   Mutation: {
     createUser: (_, args) => {
       const { input } = args;
-      const { name, email, password } = input;
+      let { name, email, password, gender } = input;
+
+      if (!email || !password) {
+        throw new Error("Email and password are required")
+      }
+
+      email = email.trim().toLowerCase()
+      password = password.trim()
+      gender = gender?.toUpperCase()
+
+      if (password.length < 8) {
+        throw new Error("Password must be at least 8 characters long")
+      }
 
       const newUser = {
         id: userIDCounter++,
