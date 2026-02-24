@@ -190,6 +190,10 @@ const addresses = [
 
 let userIDCounter = 3;
 
+const channels = Object.freeze({
+  USER_CREATED: "USER_CREATED",
+});
+
 export const resolvers = {
   Query: {
     hello: () => "Hello, GraphQL",
@@ -242,6 +246,9 @@ export const resolvers = {
 
       users.push(newUser);
 
+      // The payload must match the key of the Subscription field
+      pubSub.publish(channels.USER_CREATED, { userCreated: newUser })
+
       return newUser;
     },
     updateUser: (_, args) => {
@@ -282,7 +289,7 @@ export const resolvers = {
   Email: EmailScalar,
   Subscription: {
     userCreated: {
-      subscribe: () => pubSub.asyncIterableIterator("USER_CREATED")
+      subscribe: () => pubSub.asyncIterableIterator(channels.USER_CREATED)
     }
   }
 }
