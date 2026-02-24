@@ -3,6 +3,8 @@ The workflow is: edit typeDefs in server.js,
 then run yarn update:schema && yarn publish:schema.
 */
 
+import { EmailScalar } from "./email.scalar.js"
+
 /*
  * Params
   query ExampleQuery {
@@ -245,6 +247,7 @@ export const resolvers = {
     country: (parent) => {
       return countries.find((c) => c.code === parent.countryCode)
     }
-  }
+  },
+  Email: EmailScalar,
 }
 
