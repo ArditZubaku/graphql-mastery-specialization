@@ -5,6 +5,7 @@ then run yarn update:schema && yarn publish:schema.
 
 import { GraphQLError } from "graphql"
 import { EmailScalar } from "./email.scalar.js"
+import { pubSub } from "./pubsub.js"
 
 /*
  * Params
@@ -279,5 +280,10 @@ export const resolvers = {
     }
   },
   Email: EmailScalar,
+  Subscription: {
+    userCreated: {
+      subscribe: () => pubSub.asyncIterableIterator("USER_CREATED")
+    }
+  }
 }
 
