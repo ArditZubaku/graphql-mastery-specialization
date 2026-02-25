@@ -21,3 +21,16 @@ export function isAuthorized(user, allowedRoles) {
     )
   }
 }
+
+export function isAuthenticated(user) {
+  if (!user) {
+    throw new GraphQLError(
+      'Authentication required',
+      {
+        extensions: {
+          code: 'UNAUTHENTICATED'
+        }
+      }
+    )
+  }
+}

@@ -6,7 +6,7 @@ then run yarn update:schema && yarn publish:schema.
 import { GraphQLError } from "graphql"
 import { EmailScalar } from "./email.scalar.js"
 import { pubSub } from "./pubsub.js"
-import { isAuthorized } from "./auth.js"
+import { isAuthenticated, isAuthorized } from "./auth.js"
 
 /*
  * Params
@@ -204,10 +204,15 @@ export const resolvers = {
     users: () => users,
     addresses: () => addresses,
     searchAddresses: () => addresses,
-    me: (_parent, _arg, context) => context.user
+    me: (_parent, _arg, context) => {
+      isAuthenticated(context.user)
+      return context.user
+    }
   },
   Mutation: {
-    createUser: (_, args) => {
+    createUser: (_, args, context) => {
+      isAuthenticated(context.user)
+
       const { input } = args;
       let { name, email, password, gender } = input;
 
