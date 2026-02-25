@@ -6,6 +6,7 @@ import { schema } from "./local.schema.js"
 import { createServer } from "http"
 import { WebSocketServer } from "ws"
 import { useServer } from 'graphql-ws/use/ws';
+import { getUserFromJWTToken } from "./auth.js";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
@@ -46,7 +47,13 @@ async function startServer() {
   app.use(
     GQL_PATH,
     express.json(),
-    expressMiddleware(apolloServer),
+    expressMiddleware(apolloServer, {
+      context: ({ req }) => {
+        const token = req.headers.authorization || ""
+        const user = getUserFromJWTToken(token.replace("Bearer ", ""))
+        return { user }
+      }
+    }),
   );
 
   httpServer.listen(PORT, () => {

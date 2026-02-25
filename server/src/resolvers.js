@@ -203,6 +203,7 @@ export const resolvers = {
     users: () => users,
     addresses: () => addresses,
     searchAddresses: () => addresses,
+    me: (_parent, _arg, context) => context.user
   },
   Mutation: {
     createUser: (_, args) => {
