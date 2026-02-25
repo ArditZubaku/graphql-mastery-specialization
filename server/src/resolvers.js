@@ -6,6 +6,7 @@ then run yarn update:schema && yarn publish:schema.
 import { GraphQLError } from "graphql"
 import { EmailScalar } from "./email.scalar.js"
 import { pubSub } from "./pubsub.js"
+import { isAuthorized } from "./auth.js"
 
 /*
  * Params
@@ -265,7 +266,9 @@ export const resolvers = {
 
       return user;
     },
-    deleteUser: (_, args) => {
+    deleteUser: (_, args, context) => {
+      isAuthorized(context.user, ['admin'])
+
       const { id } = args;
       const idx = users.findIndex((u) => u.id === id)
 
