@@ -16,8 +16,8 @@ const prisma = new PrismaClient({
 async function main() {
   await prisma.user.createMany({
     data: [
-      { id: "11", email: "user11@email.com", gender: "MALE" },
-      { id: "12", email: "user12@email.com", gender: "FEMALE" },
+      { id: "11", name: "User 11", email: "user11@email.com", gender: "MALE" },
+      { id: "12", name: "User 12", email: "user12@email.com", gender: "FEMALE" },
     ]
   })
 
