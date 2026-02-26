@@ -48,7 +48,7 @@ async function startServer() {
     GQL_PATH,
     express.json(),
     expressMiddleware(apolloServer, {
-      context: ({ req }) => {
+      context: async ({ req }) => {
         const token = req.headers.authorization || ""
         const user = getUserFromJWTToken(token.replace("Bearer ", ""))
         return { user }
