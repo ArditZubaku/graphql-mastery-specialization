@@ -47,6 +47,10 @@ async function startServer() {
 
   app.use(
     GQL_PATH,
+    cors({
+      origin: 'https://studio.apollographql.com',
+      methods: ['GET', 'POST', 'OPTIONS'],
+    }),
     express.json(),
     expressMiddleware(apolloServer, {
       context: async ({ req }) => {
@@ -54,10 +58,6 @@ async function startServer() {
         const user = getUserFromJWTToken(token.replace("Bearer ", ""))
         return { user }
       }
-    }),
-    cors({
-      origin: '*',
-      methods: ['GET', 'POST', 'OPTIONS'],
     }),
   );
 
