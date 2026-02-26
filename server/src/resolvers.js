@@ -249,6 +249,7 @@ export const resolvers = {
         id: userIDCounter++,
         name,
         email,
+        gender,
       }
 
       users.push(newUser);
