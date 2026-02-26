@@ -7,6 +7,7 @@ import { GraphQLError } from "graphql"
 import { EmailScalar } from "./email.scalar.js"
 import { pubSub } from "./pubsub.js"
 import { isAuthenticated, isAuthorized } from "./auth.js"
+import { prisma } from "./prisma.js"
 
 /*
  * Params
@@ -189,8 +190,6 @@ const addresses = [
   }
 ]
 
-let userIDCounter = 3;
-
 const channels = Object.freeze({
   USER_CREATED: "USER_CREATED",
 });
@@ -201,7 +200,7 @@ export const resolvers = {
     books: () => books,
     book: (_, args) => books.find((b) => b.id === args.id),
     user: (_, args) => users.find((u) => u.id === args.id),
-    users: () => users,
+    users: () => prisma.user.findMany(),
     addresses: () => addresses,
     searchAddresses: () => addresses,
     me: (_parent, _arg, context) => {
@@ -210,7 +209,7 @@ export const resolvers = {
     }
   },
   Mutation: {
-    createUser: (_, args, context) => {
+    createUser: async (_, args, context) => {
       isAuthenticated(context.user)
 
       const { input } = args;
@@ -245,14 +244,12 @@ export const resolvers = {
         )
       }
 
-      const newUser = {
-        id: userIDCounter++,
-        name,
-        email,
-        gender,
-      }
-
-      users.push(newUser);
+      const newUser = await prisma.user.create({
+        data: {
+          email,
+          gender,
+        }
+      })
 
       // The payload must match the key of the Subscription field
       pubSub.publish(channels.USER_CREATED, { userCreated: newUser })
