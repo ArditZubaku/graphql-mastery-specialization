@@ -210,7 +210,7 @@ export const resolvers = {
   },
   Mutation: {
     createUser: async (_, args, context) => {
-      isAuthenticated(context.user)
+      // isAuthenticated(context.user)
 
       const { input } = args;
       let { name, email, password, gender } = input;
@@ -246,6 +246,7 @@ export const resolvers = {
 
       const newUser = await prisma.user.create({
         data: {
+          name,
           email,
           gender,
         }
