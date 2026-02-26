@@ -1,9 +1,9 @@
 import { GraphQLError } from "graphql"
-import { verify } from "jsonwebtoken"
+import jsonwebtoken from "jsonwebtoken"
 
 export function getUserFromJWTToken(token) {
   try {
-    return verify(token, "my-secret")
+    return jsonwebtoken.verify(token, "my-secret")
   } catch (error) {
     return null
   }
