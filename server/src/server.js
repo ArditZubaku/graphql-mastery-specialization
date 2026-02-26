@@ -7,6 +7,7 @@ import { createServer } from "http"
 import { WebSocketServer } from "ws"
 import { useServer } from 'graphql-ws/use/ws';
 import { getUserFromJWTToken } from "./auth.js";
+import cors from 'cors';
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
@@ -53,6 +54,10 @@ async function startServer() {
         const user = getUserFromJWTToken(token.replace("Bearer ", ""))
         return { user }
       }
+    }),
+    cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'OPTIONS'],
     }),
   );
 
