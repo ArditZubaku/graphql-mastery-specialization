@@ -8,7 +8,8 @@
     "start": "node src/server.js",
     "start:gateway": "node src/gateway.js",
     "update:schema": "node scripts/update-schema.js",
-    "publish:schema": "APOLLO_KEY=service:My-Graph-7k3oxm:A8rXO-GetoTRHgnUZnamOw rover graph publish My-Graph-7k3oxm@current --schema ./schema.graphql"
+    "publish:schema": "APOLLO_KEY=service:My-Graph-7k3oxm:A8rXO-GetoTRHgnUZnamOw rover graph publish My-Graph-7k3oxm@current --schema ./schema.graphql",
+    "seed": "node prisma/seed.js"
   },
   "dependencies": {
     "@apollo/server": "^5.4.0",
@@ -19,7 +20,9 @@
     "@graphql-tools/schema": "^10.0.31",
     "@graphql-tools/stitch": "^10.1.11",
     "@graphql-tools/url-loader": "^9.0.6",
+    "@prisma/adapter-better-sqlite3": "^7.4.1",
     "@prisma/client": "^7.4.1",
+    "better-sqlite3": "^12.6.2",
     "cross-fetch": "^4.1.0",
     "express": "^5.2.1",
     "graphql": "^16.12.0",
