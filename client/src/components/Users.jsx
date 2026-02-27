@@ -5,7 +5,7 @@ const GET_USERS = gql`
   query {
     users {
       id
-      name
+      email
     }
   }
 `;
@@ -21,7 +21,7 @@ const Users = () => {
       {
         data.users.map((user) => (
           <li key={user.id}>
-            {user.name}
+            {user.email}
           </li>
         ))
       }

@@ -74,11 +74,14 @@ async function startServer() {
   await apolloServer.start()
 
   app.use(
-    GQL_PATH,
     cors({
-      origin: 'https://studio.apollographql.com',
+      origin: ['https://studio.apollographql.com', 'http://localhost:5173'],
       methods: ['GET', 'POST', 'OPTIONS'],
     }),
+  )
+
+  app.use(
+    GQL_PATH,
     express.json(),
     expressMiddleware(apolloServer, {
       context: async ({ req }) => {
