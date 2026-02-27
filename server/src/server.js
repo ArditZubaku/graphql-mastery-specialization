@@ -8,6 +8,7 @@ import { WebSocketServer } from "ws"
 import { useServer } from 'graphql-ws/use/ws';
 import { getUserFromJWTToken } from "./auth.js";
 import cors from 'cors';
+import { performance } from "node:perf_hooks";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
@@ -41,6 +42,29 @@ async function startServer() {
           };
         },
       },
+      {
+        // This runs when a new request arrives at the server
+        async requestDidStart(_reqCtx) {
+          console.log("---")
+          return {
+            // It runs right before the query executes, giving access to field level hooks
+            async executionDidStart(_reqtCtxEDS) {
+              return {
+                // It runs for every field in the query
+                willResolveField(fieldResolverParams) {
+                  const fieldName = fieldResolverParams.info.fieldName
+                  const start = performance.now()
+                  return function () {
+                    // This will tell us how long it took to resolve each field
+                    const duration = (performance.now() - start).toFixed(5)
+                    console.log(`${fieldName} took ${duration}ms`)
+                  }
+                }
+              }
+            }
+          }
+        },
+      }
     ],
   });
   await apolloServer.start()

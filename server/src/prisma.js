@@ -7,5 +7,5 @@ const adapter = new PrismaBetterSqlite3({ url: config.DATABASE_URL })
 export const prisma = new PrismaClient({
   adapter,
   errorFormat: "pretty",
-  log: ["info", "query", "error"],
+  // log: ["info", "query", "error"],
 });
