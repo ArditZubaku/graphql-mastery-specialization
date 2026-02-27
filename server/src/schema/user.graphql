@@ -1,3 +1,13 @@
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | OBJECT
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
 scalar Email
 
 type User {
@@ -28,7 +38,8 @@ input UpdateUserInput {
 
 type Query {
   user(id: ID!): User
-  users: [User!]!
+  # Use PUBLIC for shareable content, PRIVATE for user related stuff
+  users: [User!]! @cacheControl(maxAge: 60, scope: PUBLIC)
   me: User
 }
 

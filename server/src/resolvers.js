@@ -200,7 +200,10 @@ export const resolvers = {
     books: () => books,
     book: (_, args) => books.find((b) => b.id === args.id),
     user: (_, args) => users.find((u) => u.id === args.id),
-    users: () => prisma.user.findMany(),
+    users: () => {
+      console.log(`'users' resolver called at ${new Date().toISOString()}`)
+      return prisma.user.findMany()
+    },
     addresses: () => addresses,
     searchAddresses: () => addresses,
     me: (_parent, _arg, context) => {

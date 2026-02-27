@@ -9,6 +9,7 @@ import { useServer } from 'graphql-ws/use/ws';
 import { getUserFromJWTToken } from "./auth.js";
 import cors from 'cors';
 import { performance } from "node:perf_hooks";
+import responseCachePlugin from "@apollo/server-plugin-response-cache"
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
@@ -28,9 +29,12 @@ async function startServer() {
 
   const apolloServer = new ApolloServer({
     schema,
+    cache: "bounded", // This activates the safe limited in-memory cache
     plugins: [
       // Proper shutdown for the HTTP server.
       ApolloServerPluginDrainHttpServer({ httpServer }),
+
+      responseCachePlugin(),
 
       // Proper shutdown for the WebSocket server.
       {
@@ -64,7 +68,7 @@ async function startServer() {
             }
           }
         },
-      }
+      },
     ],
   });
   await apolloServer.start()
