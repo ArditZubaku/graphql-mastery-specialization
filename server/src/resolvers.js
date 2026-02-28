@@ -134,6 +134,22 @@ query InlineFragmentsUnionType {
 }
 */
 
+/*
+ * Pagination
+query PaginatedUsers {
+  paginatedUsers(take: 5, after: "05") {
+    users {
+      id
+      gender
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+  }
+}
+*/
+
 const books = [
   {
     id: '1',
@@ -209,6 +225,33 @@ export const resolvers = {
     me: (_parent, _arg, context) => {
       isAuthenticated(context.user)
       return context.user
+    },
+    paginatedUsers: async (_parent, args, _context) => {
+      const { take = 5, after } = args
+      const users = await prisma.user.findMany({
+        take,
+        // Skip 1 and take X from the cursor point
+        skip: after ? 1 : 0,
+        ...(
+          after &&
+          {
+            cursor: {
+              id: after
+            }
+          }
+        ),
+        orderBy: {
+          id: "asc"
+        }
+      })
+
+      return {
+        users,
+        pageInfo: {
+          endCursor: users.at(-1)?.id ?? null,
+          hasNextPage: users.length === take,
+        }
+      }
     }
   },
   Mutation: {

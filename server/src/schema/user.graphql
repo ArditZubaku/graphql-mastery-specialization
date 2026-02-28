@@ -36,11 +36,22 @@ input UpdateUserInput {
   email: String
 }
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type UserConnection {
+  users: [User!]!
+  pageInfo: PageInfo!
+}
+
 type Query {
   user(id: ID!): User
   # Use PUBLIC for shareable content, PRIVATE for user related stuff
   users: [User!]! @cacheControl(maxAge: 60, scope: PUBLIC)
   me: User
+  paginatedUsers(take: Int, after: ID): UserConnection!
 }
 
 type Mutation {
