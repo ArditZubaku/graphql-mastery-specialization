@@ -10,12 +10,20 @@ import { getUserFromJWTToken } from "./auth.js";
 import cors from 'cors';
 import { performance } from "node:perf_hooks";
 import responseCachePlugin from "@apollo/server-plugin-response-cache"
+import rateLimit from "express-rate-limit";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
 
+const rateLimiter = rateLimit({
+  windowMs: 10 * 1_000, // 10s
+  max: 5, // 5 reqs per IP
+  keyGenerator: (req, _res) => req.header("x-user-id") || req.ip
+})
+
 async function startServer() {
   const app = express()
+  app.use(rateLimiter) // Applies globally to all requests
 
   const httpServer = createServer(app)
 
