@@ -10,20 +10,35 @@ import { getUserFromJWTToken } from "./auth.js";
 import cors from 'cors';
 import { performance } from "node:perf_hooks";
 import responseCachePlugin from "@apollo/server-plugin-response-cache"
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
+import { RedisStore } from "rate-limit-redis";
+import { createClient } from "redis";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
 
-const rateLimiter = rateLimit({
-  windowMs: 10 * 1_000, // 10s
-  max: 5, // 5 reqs per IP
-  keyGenerator: (req, _res) => req.header("x-user-id") || req.ip
-})
-
 async function startServer() {
+  let rateLimitStore
+  try {
+    const redisClient = createClient({ url: process.env.REDIS_URL || "redis://localhost:6379" })
+    await redisClient.connect()
+    rateLimitStore = new RedisStore({
+      sendCommand: (...args) => redisClient.sendCommand(args),
+    })
+    console.log("Rate limiter using Redis store")
+  } catch (err) {
+    console.warn("Redis unavailable, falling back to in-memory rate limit store:", err.message)
+  }
+
+  const rateLimiter = rateLimit({
+    windowMs: 10 * 1_000, // 10s
+    max: 5, // 5 reqs per IP
+    keyGenerator: (req, _res) => req.header("x-user-id") || ipKeyGenerator(req.ip),
+    ...(rateLimitStore && { store: rateLimitStore }),
+  })
+
   const app = express()
-  app.use(rateLimiter) // Applies globally to all requests
+  app.use(rateLimiter)
 
   const httpServer = createServer(app)
 
