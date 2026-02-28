@@ -14,15 +14,22 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
-  await prisma.user.createMany({
-    data: [
-      { id: "11", name: "User 11", email: "user11@email.com", gender: "MALE" },
-      { id: "12", name: "User 12", email: "user12@email.com", gender: "FEMALE" },
-    ]
+  await prisma.user.deleteMany()
+
+  const users = Array.from({ length: 50 }).map((val, idx, arr) => {
+    return {
+      id: String(idx + 1).padStart(2, '0'),
+      name: `user${idx + 1}`,
+      email: `user${idx + 1}@email.com`,
+      gender: idx % 2 === 0 ? "MALE" : "FEMALE"
+    }
   })
+
+  const inserted = await prisma.user.createMany({ data: users })
 
   const allUsers = await prisma.user.findMany()
   console.log(allUsers)
+  console.log(allUsers.length === inserted.count)
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect())
