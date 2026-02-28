@@ -13,8 +13,10 @@
     "seed": "node prisma/seed.js"
   },
   "dependencies": {
+    "@apollo/gateway": "^2.13.1",
     "@apollo/server": "^5.4.0",
     "@apollo/server-plugin-response-cache": "^5.0.0",
+    "@apollo/subgraph": "^2.13.1",
     "@as-integrations/express5": "^1.1.2",
     "@graphql-tools/load": "^8.1.8",
     "@graphql-tools/load-files": "^7.0.1",

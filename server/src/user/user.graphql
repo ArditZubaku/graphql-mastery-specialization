@@ -1,0 +1,65 @@
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheControlScope
+) on FIELD_DEFINITION | OBJECT
+
+enum CacheControlScope {
+  PUBLIC
+  PRIVATE
+}
+
+scalar Email
+
+type User {
+  id: ID!
+  name: String!
+  email: Email!
+  gender: Gender!
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+input CreateUserInput {
+  name: String!
+  email: Email!
+  password: String!
+  gender: Gender!
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+}
+
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+}
+
+type UserConnection {
+  users: [User!]!
+  pageInfo: PageInfo!
+}
+
+type Query {
+  user(id: ID!): User
+  # Use PUBLIC for shareable content, PRIVATE for user related stuff
+  users: [User!]! @cacheControl(maxAge: 60, scope: PUBLIC)
+  me: User
+  paginatedUsers(take: Int, after: ID): UserConnection!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  updateUser(input: UpdateUserInput!): User!
+  deleteUser(id: ID!): Boolean!
+}
+
+type Subscription {
+  userCreated: User!
+}

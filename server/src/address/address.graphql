@@ -1,0 +1,29 @@
+interface Address {
+  id: ID!
+  street: String!
+  city: String!
+  zip: String!
+}
+
+type HomeAddress implements Address {
+  id: ID!
+  street: String!
+  city: String!
+  zip: String!
+  landmark: String
+}
+
+type OfficeAddress implements Address {
+  id: ID!
+  street: String!
+  city: String!
+  zip: String!
+  company: String
+}
+
+union AddressResult = HomeAddress | OfficeAddress
+
+type Query {
+  addresses: [Address!]!
+  searchAddresses: [AddressResult!]!
+}
