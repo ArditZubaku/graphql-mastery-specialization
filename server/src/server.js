@@ -36,6 +36,7 @@ async function startServer() {
     windowMs: 10 * 1_000, // 10s
     max: 5, // 5 reqs per IP
     keyGenerator: (req, _res) => req.header("x-user-id") || ipKeyGenerator(req.ip),
+    message: { errors: [{ message: "Too many requests, please try again later." }] },
     ...(rateLimitStore && { store: rateLimitStore }),
   })
 
@@ -66,7 +67,8 @@ async function startServer() {
         // timestamp: new Date().toISOString(),
 
         // @ts-ignore
-        ...err
+        ...err,
+        ...gqlFormattedErr,
       })
 
       return {
