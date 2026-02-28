@@ -52,6 +52,7 @@ async function startServer() {
   const serverCleanup = useServer({ schema, }, wsServer)
 
   const apolloServer = new ApolloServer({
+    introspection: process.env.NODE_ENV !== 'production',
     schema,
     cache: "bounded", // This activates the safe limited in-memory cache
     plugins: [
