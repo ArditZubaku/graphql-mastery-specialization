@@ -14,6 +14,7 @@ import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
 import { createClient } from "redis";
 import "dotenv/config";
+import { logger } from "./logger.js";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"
@@ -55,6 +56,24 @@ async function startServer() {
     introspection: process.env.NODE_ENV !== 'production',
     schema,
     cache: "bounded", // This activates the safe limited in-memory cache
+
+    // Hook that allows customizing errors before they are sent to the client
+    formatError: (gqlFormattedErr, err) => {
+      logger.error({
+        // message: gqlFormattedErr.message,
+        // code: gqlFormattedErr.extensions?.code || "INTERNAL_SERVER_ERROR",
+        // path: gqlFormattedErr.path,
+        // timestamp: new Date().toISOString(),
+
+        // @ts-ignore
+        ...err
+      })
+
+      return {
+        message: gqlFormattedErr.message,
+        code: gqlFormattedErr.extensions?.code || "INTERNAL_SERVER_ERROR",
+      }
+    },
     plugins: [
       // Proper shutdown for the HTTP server.
       ApolloServerPluginDrainHttpServer({ httpServer }),
