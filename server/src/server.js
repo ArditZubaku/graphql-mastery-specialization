@@ -13,6 +13,7 @@ import responseCachePlugin from "@apollo/server-plugin-response-cache"
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 import { RedisStore } from "rate-limit-redis";
 import { createClient } from "redis";
+import "dotenv/config";
 
 const PORT = 4000
 const GQL_PATH = "/graphql"

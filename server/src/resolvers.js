@@ -215,7 +215,34 @@ export const resolvers = {
     hello: () => "Hello, GraphQL",
     books: () => books,
     book: (_, args) => books.find((b) => b.id === args.id),
-    user: (_, args) => users.find((u) => u.id === args.id),
+    user: (_, args) => {
+      if (args.id === "unauth") {
+        throw new GraphQLError(
+          "User not authenticated",
+          {
+            extensions: {
+              code: "UNAUTHENTICATED"
+            }
+          },
+        )
+      }
+
+      const user = users.find((u) => u.id === args.id)
+      if (!user) {
+        throw new GraphQLError(
+          "User not found",
+          {
+            extensions: {
+              code: "NOT_FOUND",
+              status: 404,
+              reason: "Invalid user ID",
+            }
+          }
+        )
+      }
+
+      return user
+    },
     users: () => {
       console.log(`'users' resolver called at ${new Date().toISOString()}`)
       return prisma.user.findMany()
