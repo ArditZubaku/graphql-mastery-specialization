@@ -24,6 +24,9 @@ export const resolvers = {
     addresses: () => addresses,
     searchAddresses: () => addresses,
   },
+  User: {
+    addresses: (parent) => addresses,
+  },
   Mutation: {},
 }
 

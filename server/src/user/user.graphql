@@ -10,7 +10,8 @@ enum CacheControlScope {
 
 scalar Email
 
-type User {
+# This directive tells Federation how to uniquely identify an user entity across services
+type User @key(fields: "id") {
   id: ID!
   name: String!
   email: Email!

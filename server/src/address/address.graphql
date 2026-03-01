@@ -23,6 +23,13 @@ type OfficeAddress implements Address {
 
 union AddressResult = HomeAddress | OfficeAddress
 
+# This way the User type (from user.subgraph) is extended with a new field - addresses
+# which is resolved in address.subgraph
+extend type User @key(fields: "id") {
+  id: ID! @external
+  addresses: [Address!]!
+}
+
 type Query {
   addresses: [Address!]!
   searchAddresses: [AddressResult!]!
