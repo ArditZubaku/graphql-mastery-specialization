@@ -20,7 +20,7 @@ startStandaloneServer(
   server,
   {
     listen: {
-      port: 4003
+      port: 4000
     }
   }
 ).then(({ url }) => {

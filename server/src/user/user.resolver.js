@@ -1,8 +1,8 @@
 import { GraphQLError } from "graphql"
-import { isAuthenticated, isAuthorized } from "src/auth.js";
-import { EmailScalar } from "src/email.scalar.js";
-import { prisma } from "src/prisma.js";
-import { pubSub } from "src/pubsub.js";
+import { isAuthenticated, isAuthorized } from "../auth.js";
+import { EmailScalar } from "../email.scalar.js";
+import { prisma } from "../prisma.js";
+import { pubSub } from "../pubsub.js";
 
 const users = [
   { id: 1, name: "User 1", email: "user1@email.con", gender: "MALE" },
