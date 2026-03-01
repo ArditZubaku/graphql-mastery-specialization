@@ -61,14 +61,10 @@ async function startServer() {
     // Hook that allows customizing errors before they are sent to the client
     formatError: (gqlFormattedErr, err) => {
       logger.error({
-        // message: gqlFormattedErr.message,
-        // code: gqlFormattedErr.extensions?.code || "INTERNAL_SERVER_ERROR",
-        // path: gqlFormattedErr.path,
-        // timestamp: new Date().toISOString(),
-
-        // @ts-ignore
-        ...err,
-        ...gqlFormattedErr,
+        message: gqlFormattedErr.message,
+        code: gqlFormattedErr.extensions?.code || "INTERNAL_SERVER_ERROR",
+        path: gqlFormattedErr.path,
+        timestamp: new Date().toISOString(),
       })
 
       return {
